@@ -23,7 +23,7 @@ class OpenedWindows {
         OpenedWindows.binding.opened(OpenedWindows.pathBuffer(path), (result) => {
             let code;
             if (result === 0) {
-                return end(undefined, false);
+                return end(null, false);
             }
             if (OpenedWindows.codes.hasOwnProperty(result)) {
                 code = OpenedWindows.codes[result];
@@ -32,7 +32,7 @@ class OpenedWindows {
                 code = 'ENOSYS';
             }
             if (['ERROR_SHARING_VIOLATION', 'ERROR_LOCK_VIOLATION'].indexOf(code) >= 0) {
-                return end(undefined, true);
+                return end(null, true);
             }
             const error = new Error(`${code}: -${result}, opened(${path})`);
             error.code = code;

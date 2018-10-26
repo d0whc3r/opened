@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class OpenedUnix {
-    static file(path: string, end: (error?: string, status: boolean)) {
-        const parsedPath = path.replace(/"/g, '\\"');
+    static file(filepath, end) {
+        const parsedPath = filepath.replace(/"/g, '\\"');
         const command = `lsof -F n -- "${parsedPath}"`;
         const options = {
             encoding: 'utf-8',
@@ -19,7 +19,7 @@ class OpenedUnix {
                 }
                 return end(error, false);
             }
-            end(undefined, true);
+            end(null, true);
         });
     }
     static unescape(sourceString) {
