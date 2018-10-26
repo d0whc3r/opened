@@ -1,11 +1,11 @@
 {
-  "name": "@ronomon/opened",
-  "version": "1.5.0",
-  "description": "Check if a file is open in another application on Windows, macOS and Linux.",
+  "name": "@d0whc3r/opened",
+  "version": "1.6.0",
+  "description": "Check if a file is open in another application on Windows, macOS and Linux compatible for electron.",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ronomon/opened.git"
+    "url": "git+https://github.com/d0whc3r/opened.git"
   },
   "keywords": [
     "exclusive",
@@ -14,20 +14,24 @@
     "fuser",
     "lsof",
     "open",
-    "opened"
+    "opened",
+    "electron"
   ],
-  "author": "Joran Dirk Greef",
+  "author": "d0whc3r",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ronomon/opened/issues"
+    "url": "https://github.com/d0whc3r/opened/issues"
   },
-  "homepage": "https://github.com/ronomon/opened#readme",
+  "homepage": "https://github.com/d0whc3r/opened#readme",
   "scripts": {
-    "postinstall": "node-gyp clean",
-    "test": "node test.js"
+    "build": "tsc",
+    "postinstall": "node-gyp clean"
   },
   "dependencies": {
-    "@ronomon/queue": "^3.0.0",
-    "nan": "^2.11.0"
+    "nan": "^2.11.1"
+  },
+  "devDependencies": {
+    "@types/node": "^10.12.0",
+    "typescript": "^3.1.3"
   }
 }
