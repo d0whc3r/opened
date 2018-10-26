@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class OpenedUnix {
-    static file(path, end) {
+    static file(path: string, end: (error?: string, status: boolean)) {
         const parsedPath = path.replace(/"/g, '\\"');
         const command = `lsof -F n -- "${parsedPath}"`;
         const options = {

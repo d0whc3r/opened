@@ -1,14 +1,5 @@
 import { OpenedElectronUnix, OpenedUnix } from './unix';
 import { OpenedWindows } from './windows';
 
-if (process.platform === 'win32') {
-  module.exports = {
-    OpenedElectron: OpenedWindows,
-    Opened: OpenedWindows,
-  };
-} else {
-  module.exports = {
-    OpenedElectron: OpenedElectronUnix,
-    Opened: OpenedUnix,
-  };
-}
+export const Opened = process.platform === 'win32' ? OpenedWindows : OpenedUnix;
+export const OpenedElectron = process.platform === 'win32' ? OpenedWindows : OpenedElectronUnix;

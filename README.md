@@ -1,7 +1,7 @@
 # opened
-Check if a file is open in another application on Windows, macOS and Linux.
+Check if a file is open in another application on Windows, macOS and Linux compatible for electron.
 
-This is a minified version of `@ronomon/opened` package [site project](https://github.com/ronomon/opened)
+This is a minified version of `@ronomon/opened` package using typescript [site project](https://github.com/ronomon/opened)
 
 ## Installation
 ```
@@ -28,12 +28,17 @@ otherwise no files will be detected as open and no permissions error will be ret
 
 ```javascript
 const { Opened, OpenedElectron } = require('@d0whc3r/opened');
-var path = 'some/path/file.ext';
-Opened.file(path, (error, status) => {
-    if (error || !status) {
-      console.log('file is closed or could not identify');
-    } else {
+
+const pathfile = 'some/path/file.ext';
+Opened.file(pathfile, (error, status) => {
+    if (error) {
+      console.log('Some error ocurred');
+      throw new Error(error);
+    }
+    if (status) {
       console.log('file is opened');
+    } else {
+      console.log('file is closed');
     }
   });
 ```

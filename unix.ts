@@ -1,8 +1,8 @@
 export class OpenedUnix {
   protected static child = require('child_process');
 
-  static file(path: string, end: any) {
-    const parsedPath = path.replace(/"/g, '\\"');
+  static file(filepath: string, end: (error: Error | null, status?: boolean) => void) {
+    const parsedPath = filepath.replace(/"/g, '\\"');
     const command = `lsof -F n -- "${parsedPath}"`;
     const options = {
       encoding: 'utf-8',
@@ -19,7 +19,7 @@ export class OpenedUnix {
         }
         return end(error, false);
       }
-      end(undefined, true);
+      end(null, true);
     });
   }
 

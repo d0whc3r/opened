@@ -27,11 +27,11 @@ export class OpenedWindows {
     return buffer;
   }
 
-  static file(path: string, end: any) {
+  static file(path: string, end: (error: Error | null, status?: boolean) => void) {
     OpenedWindows.binding.opened(OpenedWindows.pathBuffer(path), (result: number) => {
       let code: string;
       if (result === 0) {
-        return end(undefined, false);
+        return end(null, false);
       }
       if (OpenedWindows.codes.hasOwnProperty(result)) {
         code = OpenedWindows.codes[result];
@@ -39,7 +39,7 @@ export class OpenedWindows {
         code = 'ENOSYS';
       }
       if (['ERROR_SHARING_VIOLATION', 'ERROR_LOCK_VIOLATION'].indexOf(code) >= 0) {
-        return end(undefined, true);
+        return end(null, true);
       }
       const error: any = new Error(`${code}: -${result}, opened(${path})`);
       error.code = code;
