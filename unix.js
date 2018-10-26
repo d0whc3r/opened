@@ -1,14 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class OpenedUnix {
-    static file(filepath, end) {
+    constructor() {
+        this.child = require('child_process');
+    }
+    file(filepath, end) {
         const parsedPath = filepath.replace(/"/g, '\\"');
         const command = `lsof -F n -- "${parsedPath}"`;
         const options = {
             encoding: 'utf-8',
             maxBuffer: 2 * 1024 * 1024,
         };
-        OpenedUnix.child.exec(command, options, (error, stdout, stderr) => {
+        this.child.exec(command, options, (error, stdout, stderr) => {
             // lsof returns an error and a status code of 1 if a file is not open:
             if (error && error.code === 1 && stderr.length === 0) {
                 error = undefined;
@@ -22,7 +25,7 @@ class OpenedUnix {
             end(null, true);
         });
     }
-    static unescape(sourceString) {
+    unescape(sourceString) {
         const source = Buffer.from(sourceString, 'utf-8');
         let sourceIndex = 0;
         let sourceLength = source.length;
@@ -34,7 +37,7 @@ class OpenedUnix {
                     targetIndex = source.copy(target, 0, 0, sourceIndex);
                 }
                 sourceIndex++;
-                target[targetIndex++] = OpenedUnix.unescapeTable[source[sourceIndex++]];
+                target[targetIndex++] = this.unescapeTable[source[sourceIndex++]];
             }
             else if (target) {
                 target[targetIndex++] = source[sourceIndex++];
@@ -50,7 +53,7 @@ class OpenedUnix {
             return sourceString;
         }
     }
-    static get unescapeTable() {
+    get unescapeTable() {
         const table = Buffer.alloc(256).map((x, i) => i);
         const codes = {
             b: '\b',
@@ -66,9 +69,11 @@ class OpenedUnix {
         return table;
     }
 }
-OpenedUnix.child = require('child_process');
 exports.OpenedUnix = OpenedUnix;
 class OpenedElectronUnix extends OpenedUnix {
+    constructor() {
+        super(...arguments);
+        this.child = require('electron').remote.require('child_process');
+    }
 }
-OpenedElectronUnix.child = require('electron').remote.require('child_process');
 exports.OpenedElectronUnix = OpenedElectronUnix;

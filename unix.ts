@@ -1,14 +1,14 @@
 export class OpenedUnix {
-  protected static child = require('child_process');
+  protected child = require('child_process');
 
-  static file(filepath: string, end: (error: Error | null, status?: boolean) => void) {
+  file(filepath: string, end: (error: Error | null, status?: boolean) => void) {
     const parsedPath = filepath.replace(/"/g, '\\"');
     const command = `lsof -F n -- "${parsedPath}"`;
     const options = {
       encoding: 'utf-8',
       maxBuffer: 2 * 1024 * 1024,
     };
-    OpenedUnix.child.exec(command, options, (error: any, stdout: any, stderr: any) => {
+    this.child.exec(command, options, (error: any, stdout: any, stderr: any) => {
       // lsof returns an error and a status code of 1 if a file is not open:
       if (error && error.code === 1 && stderr.length === 0) {
         error = undefined;
@@ -23,7 +23,7 @@ export class OpenedUnix {
     });
   }
 
-  protected static unescape(sourceString: string): string {
+  protected unescape(sourceString: string): string {
     const source = Buffer.from(sourceString, 'utf-8');
     let sourceIndex = 0;
     let sourceLength = source.length;
@@ -35,7 +35,7 @@ export class OpenedUnix {
           targetIndex = source.copy(target, 0, 0, sourceIndex);
         }
         sourceIndex++;
-        target[targetIndex++] = OpenedUnix.unescapeTable[source[sourceIndex++]];
+        target[targetIndex++] = this.unescapeTable[source[sourceIndex++]];
       } else if (target) {
         target[targetIndex++] = source[sourceIndex++];
       } else {
@@ -49,7 +49,7 @@ export class OpenedUnix {
     }
   }
 
-  protected static get unescapeTable() {
+  protected get unescapeTable() {
     const table = Buffer.alloc(256).map((x, i) => i);
     const codes: { [key: string]: string } = {
       b: '\b',
@@ -67,5 +67,5 @@ export class OpenedUnix {
 }
 
 export class OpenedElectronUnix extends OpenedUnix {
-  protected static child = require('electron').remote.require('child_process');
+  protected child = require('electron').remote.require('child_process');
 }

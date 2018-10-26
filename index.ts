@@ -1,5 +1,7 @@
 import { OpenedElectronUnix, OpenedUnix } from './unix';
 import { OpenedWindows } from './windows';
 
-export const Opened = process.platform === 'win32' ? OpenedWindows : OpenedUnix;
-export const OpenedElectron = process.platform === 'win32' ? OpenedWindows : OpenedElectronUnix;
+const isWin = process.platform === 'win32';
+
+export const Opened = isWin ? new OpenedWindows() : new OpenedUnix();
+export const OpenedElectron = isWin ? new OpenedWindows() : new OpenedElectronUnix();

@@ -1,8 +1,8 @@
 import * as path from 'path';
 
 export class OpenedWindows {
-  private static binding = require('./binding.node');
-  private static codes: { [key: number]: string } = {
+  private binding = require('./binding.node');
+  private codes: { [key: number]: string } = {
     1: 'EISDIR', // ERROR_INVALID_FUNCTION
     2: 'ENOENT', // ERROR_FILE_NOT_FOUND
     3: 'ENOENT', // ERROR_PATH_NOT_FOUND
@@ -16,7 +16,7 @@ export class OpenedWindows {
     33: 'ERROR_LOCK_VIOLATION',
   };
 
-  private static pathBuffer(spath: string) {
+  private pathBuffer(spath: string) {
     const pathLong = (path as any)._makeLong(spath);
     const buffer = Buffer.alloc(Buffer.byteLength(pathLong, 'utf-8') + 1);
     buffer.write(pathLong, 0, buffer.length - 1, 'utf-8');
@@ -27,14 +27,14 @@ export class OpenedWindows {
     return buffer;
   }
 
-  static file(path: string, end: (error: Error | null, status?: boolean) => void) {
-    OpenedWindows.binding.opened(OpenedWindows.pathBuffer(path), (result: number) => {
+  file(path: string, end: (error: Error | null, status?: boolean) => void) {
+    this.binding.opened(this.pathBuffer(path), (result: number) => {
       let code: string;
       if (result === 0) {
         return end(null, false);
       }
-      if (OpenedWindows.codes.hasOwnProperty(result)) {
-        code = OpenedWindows.codes[result];
+      if (this.codes.hasOwnProperty(result)) {
+        code = this.codes[result];
       } else {
         code = 'ENOSYS';
       }

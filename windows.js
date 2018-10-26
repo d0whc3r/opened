@@ -9,7 +9,23 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const path = __importStar(require("path"));
 class OpenedWindows {
-    static pathBuffer(spath) {
+    constructor() {
+        this.binding = require('./binding.node');
+        this.codes = {
+            1: 'EISDIR',
+            2: 'ENOENT',
+            3: 'ENOENT',
+            4: 'EMFILE',
+            5: 'EPERM',
+            6: 'EBADF',
+            8: 'ENOMEM',
+            14: 'ENOMEM',
+            15: 'ENOENT',
+            32: 'ERROR_SHARING_VIOLATION',
+            33: 'ERROR_LOCK_VIOLATION',
+        };
+    }
+    pathBuffer(spath) {
         const pathLong = path._makeLong(spath);
         const buffer = Buffer.alloc(Buffer.byteLength(pathLong, 'utf-8') + 1);
         buffer.write(pathLong, 0, buffer.length - 1, 'utf-8');
@@ -19,14 +35,14 @@ class OpenedWindows {
         }
         return buffer;
     }
-    static file(path, end) {
-        OpenedWindows.binding.opened(OpenedWindows.pathBuffer(path), (result) => {
+    file(path, end) {
+        this.binding.opened(this.pathBuffer(path), (result) => {
             let code;
             if (result === 0) {
                 return end(null, false);
             }
-            if (OpenedWindows.codes.hasOwnProperty(result)) {
-                code = OpenedWindows.codes[result];
+            if (this.codes.hasOwnProperty(result)) {
+                code = this.codes[result];
             }
             else {
                 code = 'ENOSYS';
@@ -40,18 +56,4 @@ class OpenedWindows {
         });
     }
 }
-OpenedWindows.binding = require('./binding.node');
-OpenedWindows.codes = {
-    1: 'EISDIR',
-    2: 'ENOENT',
-    3: 'ENOENT',
-    4: 'EMFILE',
-    5: 'EPERM',
-    6: 'EBADF',
-    8: 'ENOMEM',
-    14: 'ENOMEM',
-    15: 'ENOENT',
-    32: 'ERROR_SHARING_VIOLATION',
-    33: 'ERROR_LOCK_VIOLATION',
-};
 exports.OpenedWindows = OpenedWindows;
