@@ -34,8 +34,7 @@
   "files": [
     "*.js",
     "*.ts",
-    "binding.gyp",
-    "binding.node"
+    "binding.*"
   ],
   "devDependencies": {
     "@types/node": "^11.13.8",
