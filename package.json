@@ -25,13 +25,15 @@
   "homepage": "https://github.com/d0whc3r/opened#readme",
   "scripts": {
     "build": "tsc",
-    "postinstall": "node-gyp clean"
+    "postinstall": "node-gyp clean",
+    "postversion": "git push --follow-tags"
   },
   "dependencies": {
-    "nan": "^2.11.1"
+    "nan": "^2.13.2"
   },
   "devDependencies": {
-    "@types/node": "^10.12.0",
-    "typescript": "^3.1.3"
+    "@types/node": "^11.13.8",
+    "node-gyp": "^4.0.0",
+    "typescript": "^3.4.5"
   }
 }

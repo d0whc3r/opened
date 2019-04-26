@@ -11,7 +11,7 @@ class OpenedUnix {
             encoding: 'utf-8',
             maxBuffer: 2 * 1024 * 1024,
         };
-        this.child.exec(command, options, (error, stdout, stderr) => {
+        this.child.exec(command, options, (error, _, stderr) => {
             // lsof returns an error and a status code of 1 if a file is not open:
             if (error && error.code === 1 && stderr.length === 0) {
                 error = undefined;
@@ -54,7 +54,7 @@ class OpenedUnix {
         }
     }
     get unescapeTable() {
-        const table = Buffer.alloc(256).map((x, i) => i);
+        const table = Buffer.alloc(256).map((_, i) => i);
         const codes = {
             b: '\b',
             f: '\f',

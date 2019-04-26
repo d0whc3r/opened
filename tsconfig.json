@@ -5,7 +5,9 @@
     "strict": true,
     "esModuleInterop": true,
     "noImplicitAny": true,
-    "strictNullChecks": false
+    "strictNullChecks": true,
+    "noUnusedParameters": true,
+    "noUnusedLocals": true
   },
   "exclude": [
     "node_modules"
