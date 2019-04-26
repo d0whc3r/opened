@@ -1,6 +1,6 @@
 {
   "name": "@d0whc3r/opened",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "description": "Check if a file is open in another application on Windows, macOS and Linux compatible for electron.",
   "main": "index.js",
   "repository": {
