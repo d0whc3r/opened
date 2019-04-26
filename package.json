@@ -31,6 +31,12 @@
   "dependencies": {
     "nan": "^2.13.2"
   },
+  "files": [
+    "*.js",
+    "*.ts",
+    "binding.gyp",
+    "binding.node"
+  ],
   "devDependencies": {
     "@types/node": "^11.13.8",
     "node-gyp": "^4.0.0",
